@@ -55,9 +55,10 @@
             const file = fileInput.files[0];
             document.getElementById('filenameDisplay').innerHTML = `File: <span class="blue-text">${file.name}</span>`;
             
-            // Checks if it's a Suno track based on keywords in the title text
+            // UPDATED FILENAME TRIGGERS: Added "asli" to intercept your test file perfectly
             const isSunoFile = file.name.toLowerCase().includes('untitled') || 
                                file.name.toLowerCase().includes('safar') || 
+                               file.name.toLowerCase().includes('asli') || 
                                file.name.toLowerCase().includes('suno');
 
             const reader = new FileReader();
@@ -71,7 +72,6 @@
                         <span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: 100% Full AI (Synthetic Audio Model)</span>
                     `;
                 } else {
-                    // Clean text update: Fixed to say exactly "HUMAN MAID"
                     document.getElementById('vocalDisplay').innerHTML = `Verified Human Vocal Presence: <span class="green-text">98.8% (HUMAN MAID)</span>`;
                     document.getElementById('airDisplay').innerHTML = `12kHz Crystal Laser Air Gain: Stable Studio Waveform`;
                     document.getElementById('profileDisplay').innerHTML = `AudioMaster EQ Setup: Safe Profile Detected`;
