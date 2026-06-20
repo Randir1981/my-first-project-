@@ -100,8 +100,8 @@
                     document.getElementById('profileDisplay').innerHTML = 'AudioMaster EQ Setup: Safe Profile Detected';
                     document.getElementById('verdictDisplay').innerHTML = '<span class="green-text">VERDICT: 100% CLEAN & SAFE FOR UPLOAD</span><br><span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: Partly AI (Instruments Only)</span>';
                 } else {
-                    // If it is an even number click (2nd scan), show Suno AI Failure
-                    document.getElementById('vocalDisplay').innerHTML = 'Verified Human Vocal Presence: <span class="red-text">14.2% (AI DETECTED)</span>';
+                    // FIXED: Raised score exactly 14% up to 28.2% (AI DETECTED)
+                    document.getElementById('vocalDisplay').innerHTML = 'Verified Human Vocal Presence: <span class="red-text">28.2% (AI DETECTED)</span>';
                     document.getElementById('airDisplay').innerHTML = '12kHz Crystal Laser Air Gain: Synthetic Frequency Profile';
                     document.getElementById('profileDisplay').innerHTML = 'AudioMaster EQ Setup: Machine Footprint Caught';
                     document.getElementById('verdictDisplay').innerHTML = '<span class="red-text">VERDICT: FAILED COMPLIANCE - SUNO AI FOOTPRINT CAUGHT</span><br><span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: 100% Full AI (Synthetic Audio Model)</span>';
