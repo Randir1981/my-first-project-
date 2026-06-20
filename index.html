@@ -10,7 +10,6 @@
         .btn { background: #0A84FF; color: white; border: none; padding: 14px 28px; border-radius: 8px; font-size: 16px; font-weight: 600; width: 100%; margin-top: 15px; cursor: pointer; position: relative; z-index: 10; }
         .btn:active { background: #0056b3; }
         .file-input { display: none; }
-        /* Fixed Upload Box: Layered with clear pointer events to ensure taps pass through instantly */
         .upload-box { border: 2px dashed #3a3a3c; padding: 35px 20px; border-radius: 10px; cursor: pointer; background: #121214; position: relative; z-index: 20; display: block; }
         .output-box { margin-top: 25px; background: #000000; padding: 20px; border-radius: 8px; border: 1px solid #3a3a3c; text-align: left; font-family: monospace; font-size: 14px; display: none; position: relative; }
         .green-text { color: #30D158; font-weight: bold; }
@@ -18,7 +17,6 @@
         .orange-text { color: #FF9500; font-weight: bold; }
         .red-text { color: #FF453A; font-weight: bold; }
         
-        /* Fixed Control Panel Layout with custom spacing to prevent overlapping constraints */
         .mode-container { margin: 20px 0; display: flex; justify-content: space-between; align-items: center; background: #121214; padding: 12px; border-radius: 8px; border: 1px solid #2c2c2e; position: relative; z-index: 10; }
         .mode-label { font-size: 13px; font-weight: bold; color: #8e8e93; text-align: left; pointer-events: none; }
         .toggle-btn { background: #2c2c2e; color: #8e8e93; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; z-index: 15; }
@@ -37,7 +35,6 @@
     <p style="color: #8e8e93; font-size: 14px;">Serverless Pre-Flight Compliance Engine</p>
 
     <div class="studio-card">
-        <!-- Input wrapper anchor target -->
         <input type="file" id="audioFile" class="file-input" accept=".wav,.mp3,.m4a,audio/*">
         
         <div class="upload-box" onclick="document.getElementById('audioFile').click()">
@@ -155,3 +152,8 @@
                         document.getElementById('profileDisplay').innerHTML = `AudioMaster EQ Setup: Peak Power at <span class="orange-text">${dbPeakMetric} dBFS</span>`;
                         document.getElementById('verdictDisplay').innerHTML = `
                             <span class="green-text">VERDICT: 100% CLEAN & SAFE FOR UPLOAD</span><br>
+                            <span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: Partly AI (Instruments Only)</span>
+                        `;
+                    }
+                }, function(error) {
+                    const isAI = currentTargetProfile === "ai";
