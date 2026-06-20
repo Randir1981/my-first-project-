@@ -7,30 +7,35 @@
     <style>
         body { font-family: -apple-system, sans-serif; background: #000000; color: #ffffff; text-align: center; padding: 20px; }
         .studio-card { background: #1c1c1e; border: 1px solid #2c2c2e; padding: 25px; border-radius: 15px; margin: 20px auto; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
-        .btn { background: #0A84FF; color: white; border: none; padding: 14px 28px; border-radius: 8px; font-size: 16px; font-weight: 600; width: 100%; margin-top: 15px; cursor: pointer; }
+        .btn { background: #0A84FF; color: white; border: none; padding: 14px 28px; border-radius: 8px; font-size: 16px; font-weight: 600; width: 100%; margin-top: 15px; cursor: pointer; position: relative; z-index: 10; }
         .btn:active { background: #0056b3; }
         .file-input { display: none; }
         .upload-box { border: 2px dashed #3a3a3c; padding: 30px; border-radius: 10px; cursor: pointer; background: #121214; }
-        .output-box { margin-top: 25px; background: #000000; padding: 20px; border-radius: 8px; border: 1px solid #3a3a3c; text-align: left; font-family: monospace; font-size: 14px; display: none; }
+        .output-box { margin-top: 25px; background: #000000; padding: 20px; border-radius: 8px; border: 1px solid #3a3a3c; text-align: left; font-family: monospace; font-size: 14px; display: none; position: relative; }
         .green-text { color: #30D158; font-weight: bold; }
         .blue-text { color: #0A84FF; }
         .red-text { color: #FF453A; font-weight: bold; }
         
-        /* Secret Zone Styling */
+        /* Disguised System Serial Switches at the top */
         .secret-header { display: flex; justify-content: space-between; align-items: center; margin: 0 auto; max-width: 500px; padding: 0 10px; }
-        .secret-trigger { width: 45%; padding: 10px 0; cursor: pointer; border-radius: 5px; font-size: 11px; font-weight: bold; color: #2c2c2e; background: transparent; transition: background 0.2s; }
-        .secret-trigger:active { background: #1c1c1e; color: #555; }
+        .secret-trigger { width: 30%; padding: 10px 0; cursor: pointer; font-size: 10px; font-weight: 600; color: #2c2c2e; font-family: monospace; background: transparent; }
+        
+        /* Secure Overlay Lock Screen Cover */
+        .paywall-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(28,28,30,0.96); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-radius: 8px; padding: 20px; box-sizing: border-box; z-index: 30; }
+        .pay-btn { background: #30D158; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: bold; margin-top: 10px; cursor: pointer; width: 85%; }
+        .pay-btn:active { background: #249d41; }
+        .blur-effect { filter: blur(5px); pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <!-- Hidden Control Header Zones -->
+    <!-- Secret Layout Controls wrapped entirely inside the tracking headers -->
     <div class="secret-header">
-        <div class="secret-trigger" onclick="setStudioMode('ai')">SECURE MATRIX L</div>
-        <h2 class="blue-text" style="margin: 0; pointer-events: none;">RK MASTER STUDIO</h2>
-        <div class="secret-trigger" onclick="setStudioMode('human')" style="text-align: right;">SECURE MATRIX R</div>
+        <div class="secret-trigger" onclick="setStudioMode('ai')">ID: 001-L</div>
+        <h2 class="blue-text" style="margin: 0; pointer-events: none; font-size: 20px;">RK MASTER STUDIO</h2>
+        <div class="secret-trigger" onclick="setStudioMode('human')" style="text-align: right;">ID: 002-R</div>
     </div>
-    <p style="color: #8e8e93; font-size: 14px; margin-top: 5px;">Serverless Pre-Flight Compliance Engine</p>
+    <p style="color: #8e8e93; font-size: 13px; margin-top: 5px;">Serverless Pre-Flight Compliance Engine</p>
 
     <div class="studio-card">
         <div class="upload-box" onclick="document.getElementById('audioFile').click()">
@@ -41,67 +46,81 @@
         <button class="btn" onclick="analyzeAudioOnPhone()">Press the button and check the AI result</button>
 
         <div id="resultBox" class="output-box">
-            <div style="color: #30D158; border-bottom: 1px solid #3a3a3c; padding-bottom: 8px; margin-bottom: 10px; font-weight: bold;">
-                === OFFICIAL WORKSPACE LOG REPORT ===
+            <!-- Hidden blurred text wrapper -->
+            <div id="reportContent">
+                <div style="color: #30D158; border-bottom: 1px solid #3a3a3c; padding-bottom: 8px; margin-bottom: 10px; font-weight: bold;">
+                    === OFFICIAL WORKSPACE LOG REPORT ===
+                </div>
+                <p id="filenameDisplay"></p>
+                <p id="vocalDisplay"></p>
+                <p id="airDisplay"></p>
+                <p id="profileDisplay"></p>
+                <div style="border-top: 1px solid #3a3a3c; padding-top: 10px; margin-top: 10px;" id="verdictDisplay"></div>
             </div>
-            <p id="filenameDisplay"></p>
-            <p id="vocalDisplay"></p>
-            <p id="airDisplay"></p>
-            <p id="profileDisplay"></p>
-            <div style="border-top: 1px solid #3a3a3c; padding-top: 10px; margin-top: 10px;" id="verdictDisplay"></div>
+
+            <!-- The $2.00 Paywall Overlay Mask Layer -->
+            <div id="paywallLock" class="paywall-overlay">
+                <p style="margin: 0; font-size: 16px; font-weight: bold; color: #ffffff;">🔒 REPORT LOCKED BY RK STUDIO</p>
+                <p style="margin: 5px 0 15px 0; font-size: 13px; color: #8e8e93;">A transaction is required to unlock this server compliance signature layout.</p>
+                <a href="https://paypal.me" target="_blank" style="width: 100%; text-decoration: none;">
+                    <button class="pay-btn" onclick="simulateUnlockForOwner()">Unlock Compliance Report ($2.00)</button>
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
-        // Default system setting starts as human
-        let activeStudioEngineMode = "human";
+        var activeStudioEngineMode = "human";
 
         function setStudioMode(mode) {
             activeStudioEngineMode = mode;
             alert("Studio Compliance Profile Synced: " + mode.toUpperCase());
         }
 
+        function simulateUnlockForOwner() {
+            setTimeout(function() {
+                document.getElementById('paywallLock').style.display = 'none';
+                document.getElementById('reportContent').classList.remove('blur-effect');
+            }, 800);
+        }
+
         function analyzeAudioOnPhone() {
-            const fileInput = document.getElementById('audioFile');
-            const resultBox = document.getElementById('resultBox');
+            var fileInput = document.getElementById('audioFile');
+            var resultBox = document.getElementById('resultBox');
             
             if (!fileInput.files || fileInput.files.length === 0) {
                 alert("Please bring an audio file to the studio first!");
                 return;
             }
 
-            const file = fileInput.files[0];
-            document.getElementById('filenameDisplay').innerHTML = `File: <span class="blue-text">${file.name}</span>`;
+            var file = fileInput.files[0];
+            document.getElementById('filenameDisplay').innerHTML = 'File: <span class="blue-text">' + file.name + '</span>';
 
-            const reader = new FileReader();
+            // Reactivate lock overlay configurations safely upon fresh clicks
+            document.getElementById('paywallLock').style.display = 'flex';
+            document.getElementById('reportContent').classList.add('blur-effect');
+            resultBox.style.display = "block";
+
+            var reader = new FileReader();
             reader.onload = function(e) {
                 if (activeStudioEngineMode === "ai") {
-                    document.getElementById('vocalDisplay').innerHTML = `Verified Human Vocal Presence: <span class="red-text">14.2% (AI DETECTED)</span>`;
-                    document.getElementById('airDisplay').innerHTML = `12kHz Crystal Laser Air Gain: Synthetic Frequency Profile`;
-                    document.getElementById('profileDisplay').innerHTML = `AudioMaster EQ Setup: Machine Footprint Caught`;
-                    document.getElementById('verdictDisplay').innerHTML = `
-                        <span class="red-text">VERDICT: FAILED COMPLIANCE - SUNO AI FOOTPRINT CAUGHT</span><br>
-                        <span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: 100% Full AI (Synthetic Audio Model)</span>
-                    `;
+                    document.getElementById('vocalDisplay').innerHTML = 'Verified Human Vocal Presence: <span class="red-text">14.2% (AI DETECTED)</span>';
+                    document.getElementById('airDisplay').innerHTML = '12kHz Crystal Laser Air Gain: Synthetic Frequency Profile';
+                    document.getElementById('profileDisplay').innerHTML = 'AudioMaster EQ Setup: Machine Footprint Caught';
+                    document.getElementById('verdictDisplay').innerHTML = '<span class="red-text">VERDICT: FAILED COMPLIANCE - SUNO AI FOOTPRINT CAUGHT</span><br><span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: 100% Full AI (Synthetic Audio Model)</span>';
                 } else {
-                    // FIXED: Dropped score exactly 20% down to 56.8%
-                    document.getElementById('vocalDisplay').innerHTML = `Verified Human Vocal Presence: <span class="green-text">56.8% (HUMAN MAID)</span>`;
-                    document.getElementById('airDisplay').innerHTML = `12kHz Crystal Laser Air Gain: Stable Studio Waveform`;
-                    document.getElementById('profileDisplay').innerHTML = `AudioMaster EQ Setup: Safe Profile Detected`;
-                    document.getElementById('verdictDisplay').innerHTML = `
-                        <span class="green-text">VERDICT: 100% CLEAN & SAFE FOR UPLOAD</span><br>
-                        <span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: Partly AI (Instruments Only)</span>
-                    `;
+                    document.getElementById('vocalDisplay').innerHTML = 'Verified Human Vocal Presence: <span class="green-text">56.8% (HUMAN MAID)</span>';
+                    document.getElementById('airDisplay').innerHTML = '12kHz Crystal Laser Air Gain: Stable Studio Waveform';
+                    document.getElementById('profileDisplay').innerHTML = 'AudioMaster EQ Setup: Safe Profile Detected';
+                    document.getElementById('verdictDisplay').innerHTML = '<span class="green-text">VERDICT: 100% CLEAN & SAFE FOR UPLOAD</span><br><span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: Partly AI (Instruments Only)</span>';
                 }
-                
-                resultBox.style.display = "block";
             };
             
             reader.readAsArrayBuffer(file);
         }
 
         document.getElementById('audioFile').addEventListener('change', function() {
-            if(this.files.length > 0) {
+            if (this.files.length > 0) {
                 document.getElementById('uploadText').innerText = "Selected: " + this.files[0].name;
             }
         });
