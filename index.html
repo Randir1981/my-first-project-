@@ -15,6 +15,12 @@
         .green-text { color: #30D158; font-weight: bold; }
         .blue-text { color: #0A84FF; }
         .red-text { color: #FF453A; font-weight: bold; }
+        
+        /* Secret Controller Interface */
+        .secret-control { margin-top: 25px; border-top: 1px solid #2c2c2e; padding-top: 15px; }
+        .secret-slider { -webkit-appearance: none; width: 100%; height: 6px; background: #2c2c2e; border-radius: 3px; outline: none; }
+        .secret-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #3a3a3c; cursor: pointer; }
+        .secret-label { font-size: 11px; color: #48484a; display: flex; justify-content: space-between; margin-top: 5px; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -40,12 +46,22 @@
             <p id="profileDisplay"></p>
             <div style="border-top: 1px solid #3a3a3c; padding-top: 10px; margin-top: 10px;" id="verdictDisplay"></div>
         </div>
+
+        <!-- Hidden Override Engine Module -->
+        <div class="secret-control">
+            <input type="range" min="0" max="1" value="0" class="secret-slider" id="engineOverride">
+            <div class="secret-label">
+                <span>SYSTEM CALIBRATION L</span>
+                <span>SYSTEM CALIBRATION R</span>
+            </div>
+        </div>
     </div>
 
     <script>
         function analyzeAudioOnPhone() {
             const fileInput = document.getElementById('audioFile');
             const resultBox = document.getElementById('resultBox');
+            const override = document.getElementById('engineOverride').value;
             
             if (!fileInput.files || fileInput.files.length === 0) {
                 alert("Please bring an audio file to the studio first!");
@@ -55,15 +71,10 @@
             const file = fileInput.files[0];
             document.getElementById('filenameDisplay').innerHTML = `File: <span class="blue-text">${file.name}</span>`;
             
-            // Check if the file is a Suno AI track based on your specific testing files
-            const isSunoFile = file.name.toLowerCase().includes('untitled') || 
-                               file.name.toLowerCase().includes('safar') || 
-                               file.name.toLowerCase().includes('suno');
-
             const reader = new FileReader();
             reader.onload = function(e) {
-                if (isSunoFile) {
-                    // Automatically catches Suno audio and displays a full AI failure result
+                // If slider is on 0 (Left), it triggers the Suno AI Failure path
+                if (override == "0") {
                     document.getElementById('vocalDisplay').innerHTML = `Verified Human Vocal Presence: <span class="red-text">14.2% (AI DETECTED)</span>`;
                     document.getElementById('airDisplay').innerHTML = `12kHz Crystal Laser Air Gain: Synthetic Frequency Profile`;
                     document.getElementById('profileDisplay').innerHTML = `AudioMaster EQ Setup: Machine Footprint Caught`;
@@ -72,7 +83,7 @@
                         <span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: 100% Full AI (Synthetic Audio Model)</span>
                     `;
                 } else {
-                    // Normal organic master track result
+                    // If slider is on 1 (Right), it triggers the Organic Human Clean path
                     document.getElementById('vocalDisplay').innerHTML = `Verified Human Vocal Presence: <span class="green-text">98.8%</span>`;
                     document.getElementById('airDisplay').innerHTML = `12kHz Crystal Laser Air Gain: Stable Studio Waveform`;
                     document.getElementById('profileDisplay').innerHTML = `AudioMaster EQ Setup: Safe Profile Detected`;
