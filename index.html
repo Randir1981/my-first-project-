@@ -2,9 +2,35 @@
 <html>
 <head>
     <title>My First Webpage</title>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #0076ff;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>Welcome to my first project on GitHub.</p>
+    <div class="card">
+        <h1>Hello World!</h1>
+        <p>Welcome to my first project on GitHub.</p>
+    </div>
 </body>
 </html>
