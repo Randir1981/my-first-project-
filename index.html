@@ -24,7 +24,8 @@
     <div class="studio-card">
         <div class="upload-box" onclick="document.getElementById('audioFile').click()">
             <p id="uploadText">Bring the file to the studio</p>
-            <input type="file" id="audioFile" class="file-input" accept="audio/*">
+            <!-- UNLOCKED FILE SELECTOR: Explicitly opens wav, mp3, and m4a files on iOS -->
+            <input type="file" id="audioFile" class="file-input" accept=".wav,.mp3,.m4a,audio/wav,audio/x-wav,audio/mp3,audio/mpeg,audio/x-m4a,audio/m4a">
         </div>
 
         <button class="btn" onclick="analyzeAudioOnPhone()">Press the button and check the AI result</button>
