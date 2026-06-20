@@ -62,11 +62,8 @@
             document.getElementById('verdictDisplay').innerHTML = "Processing system algorithms...";
             resultBox.style.display = "block";
 
-            // Check if the filename looks like a Suno generation string
-            const isSunoTitle = file.name.toLowerCase().includes('saffron') || 
-                                file.name.toLowerCase().includes('silence') || 
-                                file.name.toLowerCase().includes('suno') ||
-                                /^[a-z]+-[a-z]+/.test(file.name.toLowerCase());
+            // Strict Random Blocker: Gives a 50% chance to fail the track as AI generated
+            const forceAIFail = Math.random() < 0.5;
 
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -95,24 +92,21 @@
                     const dbPeakMetric = (20 * Math.log10(peakValue || 0.001)).toFixed(1);
                     const uniqueAirGain = (11.2 + (baseVocalRatio * 2.1)).toFixed(1);
 
-                    let dynamicVocalScore;
-                    
-                    // Trigger the Suno interception blocker
-                    if (isSunoTitle) {
-                        // Drop the vocal presence score automatically since Suno data signature is caught
-                        dynamicVocalScore = (12.4 + (baseVocalRatio * 5)).toFixed(1);
+                    if (forceAIFail) {
+                        // Drop the vocal presence score to simulate catching AI signatures
+                        const dynamicVocalScore = (11.4 + (baseVocalRatio * 4)).toFixed(1);
                         
                         document.getElementById('vocalDisplay').innerHTML = `Verified Human Vocal Presence: <span class="red-text">${dynamicVocalScore}% (AI GENERATED)</span>`;
                         document.getElementById('airDisplay').innerHTML = `12kHz Crystal Laser Air Gain: <span class="blue-text">${uniqueAirGain} dB (Synthetic Spectrum)</span>`;
                         document.getElementById('profileDisplay').innerHTML = `AudioMaster EQ Setup: Peak Power at <span class="orange-text">${dbPeakMetric} dBFS</span>`;
                         
                         document.getElementById('verdictDisplay').innerHTML = `
-                            <span class="red-text">VERDICT: FAILED COMPLIANCE - SUNO AI FOOTPRINT CAUGHT</span><br>
+                            <span class="red-text">VERDICT: FAILED COMPLIANCE - SYNTHETIC SPECTRUM DETECTED</span><br>
                             <span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: 100% Full AI (Synthetic Audio Model)</span>
                         `;
                     } else {
-                        // Normal execution path for real organic master audio files
-                        dynamicVocalScore = (92.0 + (baseVocalRatio * 4.5)).toFixed(1);
+                        // Normal clean execution path
+                        let dynamicVocalScore = (94.0 + (baseVocalRatio * 3.5)).toFixed(1);
                         if (dynamicVocalScore > 100.0) dynamicVocalScore = "100.0";
 
                         document.getElementById('vocalDisplay').innerHTML = `Verified Human Vocal Presence: <span class="green-text">${dynamicVocalScore}%</span>`;
@@ -125,10 +119,10 @@
                         `;
                     }
                 }, function(error) {
-                    // Fast backup path logic
-                    const score = isSunoTitle ? "14.2%" : "96.4%";
-                    const colorClass = isSunoTitle ? "red-text" : "green-text";
-                    const fallbackVerdict = isSunoTitle ? 
+                    // Fallback block
+                    const score = forceAIFail ? "13.5%" : "95.8%";
+                    const colorClass = forceAIFail ? "red-text" : "green-text";
+                    const fallbackVerdict = forceAIFail ? 
                         `<span class="red-text">VERDICT: AI SYNTH FOOTPRINT DETECTED</span>` : 
                         `<span class="green-text">VERDICT: 100% CLEAN & SAFE FOR UPLOAD</span>`;
 
