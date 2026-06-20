@@ -52,9 +52,7 @@
             }
 
             const file = fileInput.files[0];
-            document.getElementById('filenameDisplay').innerHTML = `File: <span class="blue-text">${
-                file.name
-               }</span>`;
+            document.getElementById('filenameDisplay').innerHTML = `File: <span class="blue-text">${file.name}</span>`;
             
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -81,4 +79,3 @@
     </script>
 </body>
 </html>
- 
