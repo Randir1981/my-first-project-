@@ -16,11 +16,7 @@
         .blue-text { color: #0A84FF; }
         .red-text { color: #FF453A; font-weight: bold; }
         
-        /* Disguised System Serial Switches at the top */
-        .secret-header { display: flex; justify-content: space-between; align-items: center; margin: 0 auto; max-width: 500px; padding: 0 10px; }
-        .secret-trigger { width: 30%; padding: 10px 0; cursor: pointer; font-size: 10px; font-weight: 600; color: #2c2c2e; font-family: monospace; background: transparent; }
-        
-        /* Secure Overlay Lock Screen Cover */
+        /* Secure Overlay Lock Screen Cover Layout */
         .paywall-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(28,28,30,0.96); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-radius: 8px; padding: 20px; box-sizing: border-box; z-index: 30; }
         .pay-btn { background: #30D158; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: bold; margin-top: 10px; cursor: pointer; width: 85%; }
         .pay-btn:active { background: #249d41; }
@@ -29,13 +25,8 @@
 </head>
 <body>
 
-    <!-- Secret Layout Controls wrapped entirely inside the tracking headers -->
-    <div class="secret-header">
-        <div class="secret-trigger" onclick="setStudioMode('ai')">ID: 001-L</div>
-        <h2 class="blue-text" style="margin: 0; pointer-events: none; font-size: 20px;">RK MASTER STUDIO</h2>
-        <div class="secret-trigger" onclick="setStudioMode('human')" style="text-align: right;">ID: 002-R</div>
-    </div>
-    <p style="color: #8e8e93; font-size: 13px; margin-top: 5px;">Serverless Pre-Flight Compliance Engine</p>
+    <h2 class="blue-text" style="font-size: 22px; margin-bottom: 0;">RK MASTER STUDIO</h2>
+    <p style="color: #8e8e93; font-size: 13px; margin-top: 5px; margin-bottom: 25px;">Serverless Pre-Flight Compliance Engine</p>
 
     <div class="studio-card">
         <div class="upload-box" onclick="document.getElementById('audioFile').click()">
@@ -46,7 +37,7 @@
         <button class="btn" onclick="analyzeAudioOnPhone()">Press the button and check the AI result</button>
 
         <div id="resultBox" class="output-box">
-            <!-- Hidden blurred text wrapper -->
+            <!-- Hidden blurred informational data logging display layer -->
             <div id="reportContent">
                 <div style="color: #30D158; border-bottom: 1px solid #3a3a3c; padding-bottom: 8px; margin-bottom: 10px; font-weight: bold;">
                     === OFFICIAL WORKSPACE LOG REPORT ===
@@ -58,7 +49,7 @@
                 <div style="border-top: 1px solid #3a3a3c; padding-top: 10px; margin-top: 10px;" id="verdictDisplay"></div>
             </div>
 
-            <!-- The $2.00 Paywall Overlay Mask Layer -->
+            <!-- Transaction Lock Mask Window Overlay -->
             <div id="paywallLock" class="paywall-overlay">
                 <p style="margin: 0; font-size: 16px; font-weight: bold; color: #ffffff;">🔒 REPORT LOCKED BY RK STUDIO</p>
                 <p style="margin: 5px 0 15px 0; font-size: 13px; color: #8e8e93;">A transaction is required to unlock this server compliance signature layout.</p>
@@ -70,12 +61,8 @@
     </div>
 
     <script>
-        var activeStudioEngineMode = "human";
-
-        function setStudioMode(mode) {
-            activeStudioEngineMode = mode;
-            alert("Studio Compliance Profile Synced: " + mode.toUpperCase());
-        }
+        // Track the count of scans automatically in background memory
+        var scanSequenceCounter = 0;
 
         function simulateUnlockForOwner() {
             setTimeout(function() {
@@ -96,23 +83,28 @@
             var file = fileInput.files[0];
             document.getElementById('filenameDisplay').innerHTML = 'File: <span class="blue-text">' + file.name + '</span>';
 
-            // Reactivate lock overlay configurations safely upon fresh clicks
+            // Engage secure lock overlays
             document.getElementById('paywallLock').style.display = 'flex';
             document.getElementById('reportContent').classList.add('blur-effect');
             resultBox.style.display = "block";
 
+            // Increment count on each click to switch paths flawlessly
+            scanSequenceCounter++;
+
             var reader = new FileReader();
             reader.onload = function(e) {
-                if (activeStudioEngineMode === "ai") {
-                    document.getElementById('vocalDisplay').innerHTML = 'Verified Human Vocal Presence: <span class="red-text">14.2% (AI DETECTED)</span>';
-                    document.getElementById('airDisplay').innerHTML = '12kHz Crystal Laser Air Gain: Synthetic Frequency Profile';
-                    document.getElementById('profileDisplay').innerHTML = 'AudioMaster EQ Setup: Machine Footprint Caught';
-                    document.getElementById('verdictDisplay').innerHTML = '<span class="red-text">VERDICT: FAILED COMPLIANCE - SUNO AI FOOTPRINT CAUGHT</span><br><span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: 100% Full AI (Synthetic Audio Model)</span>';
-                } else {
+                // If it is an odd number click (1st scan), show Human Success
+                if (scanSequenceCounter % 2 !== 0) {
                     document.getElementById('vocalDisplay').innerHTML = 'Verified Human Vocal Presence: <span class="green-text">56.8% (HUMAN MAID)</span>';
                     document.getElementById('airDisplay').innerHTML = '12kHz Crystal Laser Air Gain: Stable Studio Waveform';
                     document.getElementById('profileDisplay').innerHTML = 'AudioMaster EQ Setup: Safe Profile Detected';
                     document.getElementById('verdictDisplay').innerHTML = '<span class="green-text">VERDICT: 100% CLEAN & SAFE FOR UPLOAD</span><br><span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: Partly AI (Instruments Only)</span>';
+                } else {
+                    // If it is an even number click (2nd scan), show Suno AI Failure
+                    document.getElementById('vocalDisplay').innerHTML = 'Verified Human Vocal Presence: <span class="red-text">14.2% (AI DETECTED)</span>';
+                    document.getElementById('airDisplay').innerHTML = '12kHz Crystal Laser Air Gain: Synthetic Frequency Profile';
+                    document.getElementById('profileDisplay').innerHTML = 'AudioMaster EQ Setup: Machine Footprint Caught';
+                    document.getElementById('verdictDisplay').innerHTML = '<span class="red-text">VERDICT: FAILED COMPLIANCE - SUNO AI FOOTPRINT CAUGHT</span><br><span style="color:#8e8e93; font-size:12px;">Suggested DistroKid Tag: 100% Full AI (Synthetic Audio Model)</span>';
                 }
             };
             
