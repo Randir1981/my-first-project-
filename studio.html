@@ -164,3 +164,34 @@ RK MASTER STUDIO - COMPLETE OFFLINE DESKTOP MASTERING SUITE
 
     document.getElementById('audio-a').onplay = function() {
         if(audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
+    document.getElementById('audio-a').onplay = function() {
+        if(audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
+        if(mediaRecorder && mediaRecorder.state === 'inactive') {
+            recordedChunks = [];
+            mediaRecorder.start();
+        }
+    };
+
+    function exportMaster(fmt) {
+        if(mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.onstop = function() {
+                var fileExt = (fmt === 'WAV') ? '.wav' : '.mp3';
+                var blob = new Blob(recordedChunks, { type: (fmt === 'WAV') ? 'audio/wav' : 'audio/mp3' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'RK_Master_Output' + fileExt;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                recordedChunks = [];
+                alert("Master Render Complete! Track drops directly into your local Downloads folder.");
+            };
+            mediaRecorder.stop();
+        } else {
+            alert("Play your audio track through the hardware engine first to record your adjustments!");
+        }
+    }
+</script>
+</body>
+</html>
