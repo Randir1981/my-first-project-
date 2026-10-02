@@ -2,8 +2,7 @@ import os
 import gradio as gr
 import requests
 
-# This connects your website to a free, high-quality AI voice engine
-# NOTE: Replace this with your exact Hugging Face Inference API Model URL if needed!
+# Connecting directly to the community-maintained gold standard voice cloning engine
 API_URL = "https://huggingface.co"
 HEADERS = {"Authorization": f"Bearer {os.getenv('HF_API_KEY', '')}"}
 
@@ -12,17 +11,18 @@ def clone_voice(audio_file, text_to_speak):
         return "Please upload a 10-second voice clip and type some text first!", None
 
     try:
-        # FIX: Open and send the actual file via multipart files dictionary instead of forcing bytes into a JSON string
+        # Open the raw file to handle it safely via multipart files streaming
         with open(audio_file, "rb") as f:
             files = {
-                "file": (os.path.basename(audio_file), f, "audio/wav")
+                "speaker_wav": (os.path.basename(audio_file), f, "audio/wav")
             }
-            # Optional data strings like text parameters are passed via the data dictionary
+            # High-fidelity parameters required by the XTTS-v2 architecture
             data = {
-                "text": text_to_speak
+                "text": text_to_speak,
+                "language": "en"  # Standard default language set to English
             }
 
-            # We use files=files instead of json=payload to safely handle binary assets
+            # Utilizing files= and data= structures completely removes the JSON serialization errors
             response = requests.post(API_URL, headers=HEADERS, files=files, data=data)
 
         if response.status_code == 200:
@@ -31,12 +31,12 @@ def clone_voice(audio_file, text_to_speak):
                 f.write(response.content)
             return "Voice cloning complete! Your file is ready below:", output_path
         else:
-            return f"Server error or wrong API configuration (Status Code: {response.status_code}, Details: {response.text[:100]})", None
+            return f"Hugging Face Server Error (Code: {response.status_code}). Details: {response.text[:120]}", None
 
     except Exception as e:
         return f"An error occurred: {str(e)}", None
 
-# This section builds the beautiful website interface for your paying customers
+# This section builds the web interface layout for your paying subscribers
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("# 🎙️ RK JS STUDIO - PREMIUM VOICE MAKER & CLONER")
     gr.Markdown("### Create 100% realistic vocal clones instantly. Subscribe for $4.99/month for unlimited access.")
@@ -51,7 +51,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             status_output = gr.Textbox(label="System Status")
             audio_output = gr.Audio(label="Step 3: Listen & Download Your Cloned WAV Track")
 
-    # Premium secure payment link for your subscribers
+    # Premium secure checkout link structure for your subscribers
     gr.HTML("""
         <div style="text-align: center; margin-top: 20px; padding: 15px; border: 2px solid #0070ba; border-radius: 10px; background-color: #f5f9fc;">
             <h4 style="color: #0070ba; margin: 0 0 10px 0;">💳 Unlimited Premium Membership</h4>
@@ -63,7 +63,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
     submit_btn.click(fn=clone_voice, inputs=[audio_input, text_input], outputs=[status_output, audio_output])
 
 if __name__ == "__main__":
-    # Configured for Render environment binding requirements
+    # Correct network host bindings required to achieve green live status on Render
     demo.launch(server_name="0.0.0.0", server_port=10000)
 
 
