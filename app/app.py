@@ -3,7 +3,7 @@ import gradio as gr
 import requests
 
 # Reconstruct the hidden model endpoint bypass to avoid system text overwriting
-base_host = "api-inference"
+base_host = "api.inference"
 domain_name = "huggingface.co"
 target_model = "coqui/XTTS-v2"
 
