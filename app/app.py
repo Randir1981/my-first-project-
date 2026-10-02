@@ -3,6 +3,7 @@ import gradio as gr
 import requests
 
 # This connects your website to a free, high-quality AI voice engine
+# NOTE: Replace this with your exact Hugging Face Inference API Model URL if needed!
 API_URL = "https://huggingface.co"
 HEADERS = {"Authorization": f"Bearer {os.getenv('HF_API_KEY', '')}"}
 
@@ -10,17 +11,19 @@ def clone_voice(audio_file, text_to_speak):
     if not audio_file or not text_to_speak:
         return "Please upload a 10-second voice clip and type some text first!", None
 
-    # This prepares the audio data packet to send to the AI engine
     try:
+        # FIX: Open and send the actual file via multipart files dictionary instead of forcing bytes into a JSON string
         with open(audio_file, "rb") as f:
-            audio_bytes = f.read()
+            files = {
+                "file": (os.path.basename(audio_file), f, "audio/wav")
+            }
+            # Optional data strings like text parameters are passed via the data dictionary
+            data = {
+                "text": text_to_speak
+            }
 
-        payload = {
-            "inputs": text_to_speak,
-            "parameters": {"speaker_embedding": audio_bytes}
-        }
-
-        response = requests.post(API_URL, headers=HEADERS, json=payload)
+            # We use files=files instead of json=payload to safely handle binary assets
+            response = requests.post(API_URL, headers=HEADERS, files=files, data=data)
 
         if response.status_code == 200:
             output_path = "cloned_voice_output.wav"
@@ -28,7 +31,8 @@ def clone_voice(audio_file, text_to_speak):
                 f.write(response.content)
             return "Voice cloning complete! Your file is ready below:", output_path
         else:
-            return f"Server busy or connecting... (Error Code: {response.status_code})", None
+            return f"Server error or wrong API configuration (Status Code: {response.status_code}, Details: {response.text[:100]})", None
+
     except Exception as e:
         return f"An error occurred: {str(e)}", None
 
@@ -59,6 +63,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
     submit_btn.click(fn=clone_voice, inputs=[audio_input, text_input], outputs=[status_output, audio_output])
 
 if __name__ == "__main__":
+    # Configured for Render environment binding requirements
     demo.launch(server_name="0.0.0.0", server_port=10000)
 
 
