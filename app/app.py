@@ -10,18 +10,21 @@ target_model = "coqui/XTTS-v2"
 API_URL = "https://api-inference.huggingface.co/models/coqui/XTTS-v2"
 
 HEADERS = {"Authorization": f"Bearer {os.getenv('HF_API_KEY', '')}"}
+import base64
+
 def clone_voice(audio_file, text_to_speak):
     if not audio_file or not text_to_speak:
         return "Please upload a 10-second vocal clip and type some text first!", None
 
     try:
-        # Read the raw vocal file safely for streaming
+        # Convert raw audio bytes into a clean, safe string layout for the server payload
         with open(audio_file, "rb") as f:
-            audio_data = f.read()
+            audio_bytes = f.read()
+            encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
         payload = {
             "inputs": text_to_speak,
-            "parameters": {"speaker_wav": audio_data}
+            "parameters": {"speaker_wav": encoded_audio}
         }
 
         response = requests.post(API_URL, headers=HEADERS, json=payload)
@@ -32,10 +35,13 @@ def clone_voice(audio_file, text_to_speak):
                 out_f.write(response.content)
             return "Voice cloning successful! Your premium vocal track is ready below:", output_path
         else:
-            return f"Server busy or model loading. Status code: {response.status_code}", None
+            return f"Server busy or layout updating. Status code: {response.status_code}. Response: {response.text[:100]}", None
 
     except Exception as e:
         return f"System error processing vocal DNA: {str(e)}", None
+
+
+
 
 # Premium Subscription User Interface Layout
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
