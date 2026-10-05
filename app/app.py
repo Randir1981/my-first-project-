@@ -7,7 +7,7 @@ base_host = "api-inference"
 domain_name = "huggingface.co"
 target_model = "coqui/XTTS-v2"
 
-API_URL = f"https://{base_host}.{domain_name}/models/{target_model}"
+API_URL = "https://api-inference.huggingface.co/models/coqui/XTTS-v2"
 
 HEADERS = {"Authorization": f"Bearer {os.getenv('HF_API_KEY', '')}"}
 def clone_voice(audio_file, text_to_speak):
