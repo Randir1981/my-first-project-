@@ -15,31 +15,29 @@ import base64
 
 import os
 import shutil
-
 def clone_voice(audio_file, text_to_speak):
     if not audio_file or not text_to_speak:
-        return "Please upload a 10-second vocal clip and type some text first!", None
+        return "Please upload your vocal clip and type some text first!", None
 
     try:
-        # Create a temporary safe path with no broken system spaces
-        safe_path = os.path.join(os.path.dirname(audio_file), "safe_vocal_dna.wav")
-        shutil.copyfile(audio_file, safe_path)
-
-        # Convert raw audio bytes into a clean, safe string layout for the server payload
-        with open(safe_path, "rb") as f:
+        # Open and send the actual physical binary audio file safely
+        with open(audio_file, "rb") as f:
             audio_bytes = f.read()
-            encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
-        payload = {
-            "inputs": text_to_speak,
-            "parameters": {"speaker_wav": encoded_audio}
+        headers = {
+            "Authorization": f"Bearer {os.getenv('HF_API_KEY', '')}",
+            "X-Wait-For-Model": "true"
         }
 
-        response = requests.post(API_URL, headers=HEADERS, json=payload)
+        # Deliver text and audio bytes directly as form files instead of JSON text
+        files = {
+            "file": ("speaker.wav", audio_bytes, "audio/wav")
+        }
+        data = {
+            "text": text_to_speak
+        }
 
-        # Clean up temporary safe file right away
-        if os.path.exists(safe_path):
-            os.remove(safe_path)
+        response = requests.post(API_URL, headers=headers, files=files, data=data)
 
         if response.status_code == 200:
             output_path = "cloned_vocal_output.wav"
@@ -47,6 +45,15 @@ def clone_voice(audio_file, text_to_speak):
                 out_f.write(response.content)
             return "Voice cloning successful! Your premium vocal track is ready below:", output_path
         else:
+            return f"Server response error. Status: {response.status_code}. Details: {response.text[:100]}", None
+
+    except Exception as e:
+        return f"System error processing vocal DNA: {str(e)}", None
+
+
+
+
+        
             return f"Server busy or layout updating. Status code: {response.status_code}. Response: {response.text[:100]}", None
 
     except Exception as e:
