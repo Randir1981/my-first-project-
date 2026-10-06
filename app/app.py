@@ -4,7 +4,7 @@ import gradio as gr
 from gradio_client import Client, handle_file
 
 # Official Hugging Face Spaces repository for the XTTS voice cloning engine
-HF_SPACE = "lucas2/XTTS-v2"
+HF_SPACE = "reach-vb/XTTS-v2"
 
 def clone_voice(audio_file, text_to_speak):
     if not audio_file or not text_to_speak:
