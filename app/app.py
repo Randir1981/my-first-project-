@@ -1,7 +1,8 @@
 import os
-import gradio as gr
 import requests
-
+import base64
+import shutil
+import gradio as gr
 # Reconstruct the hidden model endpoint bypass to avoid system text overwriting
 base_host = "api-inference"
 domain_name = "huggingface.co"
