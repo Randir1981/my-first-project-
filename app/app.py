@@ -13,7 +13,7 @@ def clone_voice(audio_file, text_to_speak):
     try:
         # Securely initialize the connection to the Hugging Face server
         token = os.getenv('HF_API_KEY', '')
-        client = Client(HF_SPACE, hf_token=token if token else None)
+        client = Client(HF_SPACE, token=token if token else None)
 
         # Execute the official endpoint layout for XTTS voice duplication
         result = client.predict(
