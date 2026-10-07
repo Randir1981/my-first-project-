@@ -6,7 +6,7 @@ from gradio_client import Client, handle_file
 # Official Hugging Face Spaces repository for the XTTS voice cloning engine
 HF_SPACE = "reach-vb/XTTS-v2"
 
-def clone_voice(audio_file, text_to_speak):
+def clone_voice(audio_file, text_to_speak, language_choice):
     if not audio_file or not text_to_speak:
         return "Please upload your vocal clip and type some text first!", None
 
@@ -17,7 +17,7 @@ def clone_voice(audio_file, text_to_speak):
         # Execute the official endpoint layout for XTTS voice duplication
         result = client.predict(
             text=text_to_speak,
-            language="en",
+            language=language_choice,
             speaker_wav=handle_file(audio_file),
             api_name="/predict"
         )
@@ -36,9 +36,9 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("# **RK PREMIUM VOICE MAKER**")
     gr.Markdown("### *Professional Offline-Grade Vocal Clone Studio Engine*")
 
-    with gr.Row():
-        with gr.Column():
+   with gr.Column():
             vocal_sample = gr.Audio(label="Upload Target Voice Sample (10-15 Seconds)", type="filepath")
+            language_choice = gr.Dropdown(label="Select Target Language", choices=["en", "hi", "es", "fr"], value="en")
             input_text = gr.Textbox(label="Type the Lyrics or Sentences to Speak", lines=3, placeholder="Enter text here...")
             submit_btn = gr.Button("Generate Premium Voice Clone", variant="primary")
 
@@ -48,7 +48,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
 
     submit_btn.click(
         fn=clone_voice,
-        inputs=[vocal_sample, input_text],
+         inputs=[vocal_sample, input_text, language_choice],
         outputs=[status_output, audio_output]
     )
 
