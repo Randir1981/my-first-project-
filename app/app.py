@@ -30,19 +30,18 @@ def clone_voice(audio_file, text_to_speak, language_choice):
 
     except Exception as e:
         return f"System error processing vocal DNA: {str(e)}", None
-
 # Premium Subscription User Interface Layout Setup
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("# **RK PREMIUM VOICE MAKER**")
     gr.Markdown("### *Professional Offline-Grade Vocal Clone Studio Engine*")
 
- with gr.Column():
+    with gr.Column():
         vocal_sample = gr.Audio(label="Upload Target Voice Sample (10-15 Seconds)", type="filepath")
         language_choice = gr.Dropdown(label="Select Target Language", choices=["en", "hi", "es", "fr"], value="en")
         input_text = gr.Textbox(label="Type the Lyrics or Sentences to Speak", lines=3, placeholder="Enter text here...")
         submit_btn = gr.Button("Generate Premium Voice Clone", variant="primary")
 
-        with gr.Column():
+    with gr.Column():
             status_output = gr.Textbox(label="System Status Report")
             audio_output = gr.Audio(label="Generated Cloned Audio Output")
 
