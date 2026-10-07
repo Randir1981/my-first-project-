@@ -4,16 +4,16 @@ import gradio as gr
 from gradio_client import Client, handle_file
 
 # Official Hugging Face Spaces repository for the XTTS voice cloning engine
-HF_SPACE = "reach-vb/XTTS-v2"
+HF_SPACE = "coqui/XTTS-v2"
 
 def clone_voice(audio_file, text_to_speak, language_choice):
     if not audio_file or not text_to_speak:
         return "Please upload your vocal clip and type some text first!", None
-
+client = Client("coqui/XTTS-v2")
     try:
         # Securely initialize the connection to the Hugging Face server
         token = os.getenv('HF_API_KEY', '')
-        client = Client(HF_SPACE, token=token if token else None)
+        # client = Client(HF_SPACE, token=token if token else None)
         # Execute the official endpoint layout for XTTS voice duplication
         result = client.predict(
             text=text_to_speak,
