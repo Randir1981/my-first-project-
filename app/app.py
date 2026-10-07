@@ -11,12 +11,9 @@ def clone_voice(audio_file, text_to_speak, language_choice):
         return "Please upload your vocal clip and type some text first!", None
     
     try:
-        client = Client(HF_SPACE)
-        
-        # Securely initialize the connection to the Hugging Face server
+        # Initialize the connection to the Hugging Face server
         token = os.getenv('HF_API_KEY', '')
-        if token:
-            client = Client(HF_SPACE, token=token)
+        client = Client(HF_SPACE, token=token)
         
         # Execute the official endpoint layout for XTTS voice duplication
         result = client.predict(
