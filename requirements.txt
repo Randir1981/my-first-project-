@@ -1,3 +1,5 @@
+torch
+torchaudio
 coqui-tts
 gradio
 SpeechRecognition
