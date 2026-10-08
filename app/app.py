@@ -3,6 +3,9 @@ import subprocess
 import gradio as gr
 
 with gr.Blocks() as demo:
+    gr.Markdown("# **RK PREMIUM VOICE MAKER**")
+    gr.Markdown("### ***Professional Online-Grade Vocal Clone Studio Engine***")
+
     with gr.Column():
         vocal_sample = gr.Audio(label="Upload Target Voice Sample", type="filepath")
         language_choice = gr.Dropdown(label="Select Target Language", choices=["en", "hi", "es", "fr"])
@@ -17,10 +20,6 @@ with gr.Blocks() as demo:
         if not text_to_speak:
             return "Please type some text first!", None
         try:
-            temp_audio_path = "temp_voice_sample.wav"
-            with open(temp_audio_path, "wb") as audio_file_out:
-                audio_file_out.write(audio_file.read())
-
             xtts_model_path = "path/to/xtts/model"
             xtts_config_path = "path/to/xtts/config.yaml"
             output_filename = "cloned_vocal_output.wav"
@@ -29,7 +28,7 @@ with gr.Blocks() as demo:
                 "python", "-m", "xtts.inference",
                 "--model-path", xtts_model_path,
                 "--config-path", xtts_config_path,
-                "--input-audio", temp_audio_path,
+                "--input-audio", audio_file,
                 "--output-dir", ".",
                 "--text", text_to_speak,
                 "--language", language_choice
