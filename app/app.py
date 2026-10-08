@@ -1,6 +1,6 @@
 import os
-import subprocess
 import gradio as gr
+from TTS.api import TTS
 
 with gr.Blocks() as demo:
     gr.Markdown("# **RK PREMIUM VOICE MAKER**")
@@ -20,23 +20,16 @@ with gr.Blocks() as demo:
         if not text_to_speak:
             return "Please type some text first!", None
         try:
-            xtts_model_path = "path/to/xtts/model"
-            xtts_config_path = "path/to/xtts/config.yaml"
             output_filename = "cloned_vocal_output.wav"
 
-            command = [
-                "python", "-m", "xtts.inference",
-                "--model-path", xtts_model_path,
-                "--config-path", xtts_config_path,
-                "--input-audio", audio_file,
-                "--output-dir", ".",
-                "--text", text_to_speak,
-                "--language", language_choice
-            ]
-
-            result = subprocess.run(command, capture_output=True, text=True)
-            if result.returncode != 0:
-                return f"XTTS pipeline failed: {result.stderr}", None
+            # Direct native python XTTS execution path
+            tts = TTS(model_name="tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
+            tts.tts_to_file(
+                text=text_to_speak,
+                speaker_wav=audio_file,
+                language=language_choice,
+                file_path=output_filename
+            )
 
             return "Voice cloning successful! Your premium vocal track is ready below:", output_filename
         except Exception as e:
@@ -51,4 +44,4 @@ with gr.Blocks() as demo:
 if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=10000)
 
-
+Sent from my iPhone
