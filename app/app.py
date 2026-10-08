@@ -13,8 +13,8 @@ with gr.Blocks() as demo:
         submit_btn = gr.Button("Generate Premium Vocal Clone", variant="primary")
 
     with gr.Column():
-    status_output = gr.Textbox(label="System Status Report")
-    audio_output = gr.Audio(label="Generated Cloned Audio Output")
+        status_output = gr.Textbox(label="System Status Report")
+        audio_output = gr.Audio(label="Generated Cloned Audio Output")
 
     def clone_voice(audio_file, text_to_speak, language_choice):
         if not text_to_speak:
