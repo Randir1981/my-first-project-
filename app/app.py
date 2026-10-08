@@ -1,42 +1,42 @@
-import os
 import gradio as gr
-from TTS.api import TTS
+from coqui_tts.api import TTS
 
+def clone_voice(voice_file_path, text_input, language):
+    class=class="str">"cmt"># Error checking for empty text input
+    if not text_input.strip():
+        return class="str">"Error: Text input cannot be empty."
+    
+    try:
+        tts = TTS(model=class="str">'tts_models/multilingual/multi-dataset/xtts_v2', gpu=False)
+        
+        class=class="str">"cmt"># Constructing the full path to the uploaded voice file
+        speaker_wav = fclass="str">"./{voice_file_path}"
+        
+        class=class="str">"cmt"># Generating the cloned voice
+        tts.tts_to_file(text=text_input, speaker_wav=speaker_wav, lang=language, out_file=class="str">"cloned_vocal_output.wav")
+        
+        return class="str">"Vocal clone generated successfully!"
+    except Exception as e:
+        return str(e)
+
+class=class="str">"cmt"># Gradio interface layout
 with gr.Blocks() as demo:
-    gr.Markdown(class="str">"class="cmtclass="str">"># **RK PREMIUM VOICE MAKER**")
-    gr.Markdown(class="str">"class="cmtclass="str">">### ***Professional Online-Grade Vocal Clone Studio Engine***")
-
-    with gr.Column():
-        vocal_sample = gr.Audio(label=class="str">"Upload Target Voice Sample", type=class="str">"filepath")
-        language_choice = gr.Dropdown(label=class="str">"Select Target Language", choices=[class="str">"en", class="str">"hi", class="str">"es", class="str">"fr"])
-        input_text = gr.Textbox(label=class="str">"Type the Lyrics or Sentences to Speak", lines=class="num">3, placeholder=class="str">"Enter text here...")
-        submit_btn = gr.Button(class="str">"Generate Premium Vocal Clone", variant=class="str">"primary")
-
-    with gr.Column():
-        status_output = gr.Textbox(label=class="str">"System Status Report")
-        audio_output = gr.Audio(label=class="str">"Generated Cloned Audio Output")
-
-    def clone_voice(audio_file, text_to_speak, language_choice):
-        if not text_to_speak:
-            return class="str">"Please type some text first!", None
-        try:
-            output_filename = class="str">"cloned_vocal_output.wav"
-            tts = TTS(model_name=class="str">"tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
-            tts.tts_to_file(
-                text=text_to_speak,
-                speaker_wav=audio_file,
-                language=language_choice,
-                file_path=output_filename
-            )
-            return class="str">"Voice cloning successful! Your premium vocal track is ready below:", output_filename
-        except Exception as e:
-            return fclass="str">"System error processing vocal DNA: {str(e)}", None
-
-    submit_btn.click(
-        fn=clone_voice,
-        inputs=[vocal_sample, input_text, language_choice],
-        outputs=[status_output, audio_output]
-    )
+    gr.Markdown(class="str">"**RK PREMIUM VOICE MAKER**\nProfessional Online-Grade Vocal Clone Studio Engine")
+    
+    with gr.Row():
+        with gr.Column(scale=class="num">3):
+            voice_file_upload = gr.File(label=class="str">"Upload Target Voice Sample")
+            language_dropdown = gr.Dropdown(choices=[class="str">'en', class="str">'hi', class="str">'es', class="str">'fr'], label=class="str">"Select Target Language")
+            text_box = gr.Textbox(lines=class="num">5, placeholder=class="str">"Type the Lyrics or Sentences to Speak", label=class="str">"Text Input")
+        
+        with gr.Column(scale=class="num">2):
+            generate_button = gr.Button(class="str">"Generate Premium Vocal Clone")
+            status_report = gr.Textbox(label=class="str">"System Status Report", lines=class="num">2, interactive=False)
+            
+            with gr.Audio(type=class="str">"filepath", label=class="str">"Generated Cloned Audio Output") as audio_player:
+                pass
+    
+    generate_button.click(clone_voice, inputs=[voice_file_upload, text_box, language_dropdown], outputs=[status_report, audio_player])
 
 if __name__ == class="str">"__main__":
     demo.launch(server_name=class="str">"class="num">0.0.class="num">0.0", server_port=class="num">10000)
