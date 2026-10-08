@@ -3,8 +3,8 @@ import subprocess
 import gradio as gr
 
 
-with gr.Blocks() as demo:
-with gr.Column():
+ with gr.Blocks() as demo:
+    with gr.Column():
         vocal_sample = gr.Audio(label="Upload Target Voice Sample", type="filepath")
         language_choice = gr.Dropdown(label="Select Target Language", choices=["en", "hi", "es", "fr"])
         input_text = gr.Textbox(label="Type the Lyrics or Sentences to Speak", lines=3, placeholder="Enter text here...")
@@ -13,8 +13,8 @@ with gr.Column():
         status_output = gr.Textbox(label="System Status Report")
         audio_output = gr.Audio(label="Generated Cloned Audio Output")
    
-def clone_voice(audio_file, text_to_speak, language_choice):
-    if not text_to_speak:
+ def clone_voice(audio_file, text_to_speak, language_choice):
+        if not text_to_speak:
         return "Please type some text first!", None
     try:
         temp_audio_path = "temp_voice_sample.wav"
