@@ -18,7 +18,7 @@ with gr.Blocks() as demo:
 
     def clone_voice(audio_file, text_to_speak, language_choice):
         if not text_to_speak:
-        return "Please type some text first!", None
+            return "Please type some text first!", None
         try:
         output_filename = "cloned_vocal_output.wav"
 
