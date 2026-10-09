@@ -5,13 +5,12 @@ from flask import Flask, request, jsonify
 from pathlib import Path
 
 app = Flask(__name__)
-SUPPORTED_LANGUAGES = ['en', 'hi', 'es', 'fr']
 
 @app.route('/synthesize', methods=['POST'])
 def synthesize():
-    if 'audio' not in request.files:
+    if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
-    file = request.files['audio']
+    file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     if file:
