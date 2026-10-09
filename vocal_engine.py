@@ -7,7 +7,7 @@ app = Flask(__name__)
 def homepage():
     return "<h1>R.K GLOBAL ONLINE CONTROL ENGINE IS ACTIVE</h1>"
 
-@app.route("/synthesize", methods=["POST"])
+@app.route("/process_vocal_cloning", methods=["POST"])
 def forward_to_studio():
     if "file" not in request.files:
         return jsonify({"error": "No vocal sample uploaded"}), 400
